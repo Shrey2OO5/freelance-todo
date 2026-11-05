@@ -4,12 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todo App</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="container">
-      <input type="text" id="add" />
-      <button id="btn" disabled>Add Task</button>
-    </div>
+    <main id="container">
+      <header class="page-header">
+        <p class="eyebrow">A LITTLE FOCUS, EVERY DAY</p>
+        <h1>Your tasks.</h1>
+        <p>Make room for what matters. One task at a time.</p>
+      </header>
+      <form action="" id="add-form">
+        <label for="add">What would you like to get done?</label>
+        <input type="text" id="add" placeholder="e.g. Read a chapter" autocomplete="off" />
+        <button id="btn" type="submit" disabled>Add Task</button>
+      </form>
+    </main>
     <script src="script.js" type="module"></script>
   </body>
 </html>

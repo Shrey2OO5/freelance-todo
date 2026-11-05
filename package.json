@@ -1,0 +1,21 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "vitest run --environment jsdom"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-learning:Shrey2OO5/freelance-todo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "jsdom": "^30.1.3",
+    "vitest": "^5.1.0"
+  }
+}

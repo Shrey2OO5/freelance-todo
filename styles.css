@@ -1,0 +1,208 @@
+/* Design tokens: change these to adjust the whole palette. */
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #243b39;
+  background: #f5f4ef;
+  --accent: #17685a;
+  --border: #dce3dd;
+  --muted: #63736e;
+}
+/* Padding and borders stay inside each element's declared width. */
+*, *::before, *::after {
+  box-sizing: border-box;
+ 
+}
+body {
+  margin: 0;
+  line-height: 1.5;
+ 
+}
+button, input {
+  font: inherit;
+ 
+}
+/* Fluid on phones, capped on desktops. Height follows content. */
+#container {
+  width: min(100% - 2rem, 52rem);
+  margin: clamp(2rem, 7vw, 6rem) auto;
+ 
+}
+.page-header {
+  margin-bottom: 2rem;
+ 
+}
+.eyebrow {
+  color: var(--accent);
+  font-size: .72rem;
+  font-weight: 750;
+  letter-spacing: .16em;
+ 
+}
+h1 {
+  margin: .5rem 0;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  line-height: 1.1;
+  letter-spacing: -.05em;
+ 
+}
+.page-header > p:last-child {
+  color: var(--muted);
+  margin-bottom: 0;
+ 
+}
+/* The label spans both columns;
+  minmax allows the input to shrink. */
+#add-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .75rem;
+  padding: 1.5rem;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  box-shadow: 0 6px 24px #243b3906;
+ 
+}
+#add-form label {
+  grid-column: 1 / -1;
+  font-weight: 650;
+  font-size: .9rem;
+ 
+}
+#add {
+  min-width: 0;
+  width: 100%;
+  padding: .8rem 1rem;
+  color: inherit;
+  background: #fafbf9;
+  border: 1px solid #b8c7bf;
+  border-radius: .5rem;
+ 
+}
+#add::placeholder {
+  color: #6b7973;
+ 
+}
+button {
+  min-height: 44px;
+  padding: .55rem .85rem;
+  border: 1px solid transparent;
+  border-radius: .5rem;
+  cursor: pointer;
+  font-size: .85rem;
+  font-weight: 600;
+ 
+}
+#btn {
+  background: var(--accent);
+  color: white;
+  padding-inline: 1.25rem;
+ 
+}
+#btn:hover:not(:disabled) {
+  background: #105044;
+ 
+}
+#btn:disabled {
+  background: #e5ebe6;
+  color: #64736a;
+  cursor: not-allowed;
+ 
+}
+/* Keyboard users need a visible focus indicator. */
+button:focus-visible, input:focus-visible {
+  outline: 3px solid #268676;
+  outline-offset: 3px;
+ 
+}
+#list-container {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: .75rem;
+ 
+}
+#list-container li {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .5rem;
+  padding: 1rem 1.25rem;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: .75rem;
+ 
+}
+/* Titles take free space and long words wrap rather than overflowing. */
+#list-container li > span {
+  flex: 1 1 12rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  padding-block: .25rem;
+  margin-right: .5rem;
+ 
+}
+.completeBtn {
+  background: #e6f2ec;
+  color: #185c4d;
+ 
+}
+.completeBtn:hover {
+  background: #d2e8dc;
+ 
+}
+.editBtn {
+  background: #f1f3ef;
+  color: #40524b;
+ 
+}
+.editBtn:hover {
+  background: #e3e8e1;
+ 
+}
+.deleteBtn {
+  background: transparent;
+  color: #a52c40;
+ 
+}
+.deleteBtn:hover {
+  background: #fcecef;
+ 
+}
+#list-container .is-complete {
+  background: #f0f4ef;
+ 
+}
+.is-complete > span {
+  color: var(--muted);
+ 
+}
+#empty-state {
+  margin-top: 1.5rem;
+  padding: 2.5rem 1rem;
+  border: 1px dashed #bdccc2;
+  border-radius: .75rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 400;
+ 
+}
+/* On small screens, stack the form and give titles a full row. */
+@media (max-width: 36rem) {
+  #add-form {
+  grid-template-columns: minmax(0, 1fr);
+  padding: 1rem;
+ 
+}
+  #list-container li {
+  padding: 1rem;
+ 
+}
+  #list-container li > span {
+  flex-basis: 100%;
+  margin-right: 0;
+ 
+}
+}
