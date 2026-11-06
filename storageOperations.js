@@ -42,6 +42,7 @@ export function createTask(taskData) {
   let task = { id, taskTitle, isComplete };
   tasks.push(task);
   localStorage.setItem("tasks", JSON.stringify(tasks));
+  localStorage.setItem("global-id", `${id}`)
   return tasks;
 }
 
