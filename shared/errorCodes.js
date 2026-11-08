@@ -1,0 +1,4 @@
+export const TASK_NOT_FOUND = "TASK_NOT_FOUND";
+export const TITLE_TOO_SHORT = "TITLE_TOO_SHORT";
+export const TITLE_TOO_LONG = "TITLE_TOO_LONG";
+export const INVALID_INPUT = "INVALID_INPUT";

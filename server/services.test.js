@@ -1,5 +1,5 @@
 import { beforeEach, test, expect } from "vitest";
-import { addTask, getTasks, toggleCompletion, deleteTaskById, updateTaskById, deleteTasks } from "./services.js";
+import { addTask, getTasks, toggleCompletion, deleteTaskById, updateTaskById, deleteTasks } from "../services.js";
 
 beforeEach(() => {
   localStorage.clear();

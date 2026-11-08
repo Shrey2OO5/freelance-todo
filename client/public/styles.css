@@ -134,6 +134,17 @@ button:focus-visible, input:focus-visible {
   border-radius: .75rem;
  
 }
+
+.err-block {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 1rem 1.25rem;
+  background: aliceblue;
+  border-radius: .75rem;
+  z-index: 100;
+}
+
 /* Titles take free space and long words wrap rather than overflowing. */
 #list-container li > span {
   flex: 1 1 12rem;
@@ -204,5 +215,9 @@ button:focus-visible, input:focus-visible {
   flex-basis: 100%;
   margin-right: 0;
  
+}
+
+#err-block {
+  padding: 1rem;
 }
 }
