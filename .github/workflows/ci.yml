@@ -37,7 +37,7 @@ jobs:
       - name: Prepare website files
         run: |
           mkdir site
-          cp index.html styles.css script.js ui.js services.js storageOperations.js site/
+          cp index.html styles.css script.js ui.js services.js storageOperations.js utility.js site/
 
       - uses: actions/upload-pages-artifact@v4
         with:
