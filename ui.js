@@ -16,15 +16,16 @@ export function renderTasks() {
   if (emptyState) emptyState.remove();
   const existingList = document.getElementById("list-container");
   if (existingList) existingList.remove();
-
+  const exportExists = document.getElementById("export-btn");
   if (tasks.length === 0) {
+    exportExists.disabled = true;
     const msg = document.createElement("h2");
     msg.id = "empty-state";
     msg.textContent = "A clear list. Add your first task above.";
     mainContent.append(msg);
     return;
   }
-
+  exportExists.disabled = false;
   const listContainer = document.createElement("ul");
   listContainer.id = "list-container";
   mainContent.append(listContainer);
