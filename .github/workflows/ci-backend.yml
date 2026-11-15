@@ -1,0 +1,47 @@
+name: Test backend
+
+on:
+  push:
+    branches: [feature/postgres-backend]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test: # Name of the job
+    runs-on: ubuntu-latest # Operating System
+    steps:
+      - uses: actions/checkout@v6 # Copy files into the runner
+      - uses: actions/setup-node@v7 # Setup the node in the runner
+        with:
+          node-version: "24.19.0" # Specify the version
+      - run: npm ci # Command to run the ci-backend workflow file
+      - name: Create test tables
+        run: psql -v ON_ERROR_STOP=1 -f server/schema.sql
+      - run: npm run backend-test # Run the test script
+    services:
+        postgres:
+            image: postgres:16
+            env:
+                POSTGRES_DB: test_db
+                POSTGRES_USER: test_user
+                POSTGRES_PASSWORD: ci_only_password
+            ports:
+                - 5432:5432
+            options: >-
+                --health-cmd pg_isready
+                --health-interval 5s
+                --health-timeout 5s
+                --health-retries 10
+    env:
+        PGHOST: localhost
+        PGPORT: "5432"
+        PGDATABASE: test_db
+        PGUSER: test_user
+        PGPASSWORD: ci_only_password
+# What else do I need?
+# I need to load env variables, so that runner can connect to the db
+# Well, I need to have postgres installed in runner
+# And then, it needs to create the database and table.
+# I know nothing about what to write.
+# What if I provide required varibales to connect to database? But how?
+# Maybe I can create the docker container, but then how to create it and how app will connect to that db?

@@ -9,6 +9,39 @@ export default class TaskRepository {
     this.dbPool = pool;
   }
 
+  createTask = async (payload) => {
+    try {
+
+      if(payload.task_title.trim() === "") {
+        const error = new Error("Title should contain at least one character!");
+        error.code = TITLE_TOO_SHORT;
+        throw error;
+      }
+
+      if(payload.task_title.trim().length > 250) {
+        const error = new Error("Title should contain at most 250 characters");
+        error.code = TITLE_TOO_LONG;
+        throw error;
+      }
+      const { rows } = await this.dbPool.query(
+        `
+      INSERT INTO tasks (task_title) VALUES ($1)
+      RETURNING *;
+      `,
+        [payload.task_title],
+      );
+      return rows[0];
+    } catch (err) {
+      if (err.code === "23502") {
+        const error = new Error("Invalid Input");
+        error.code = INVALID_INPUT;
+        throw error;
+      }
+
+      throw err;
+    }
+  };
+
   getTasks = async () => {
     const { rows } = await this.dbPool.query(
       "SELECT id, task_title, is_complete FROM tasks ORDER BY id",
@@ -85,4 +118,10 @@ export default class TaskRepository {
       throw error;
     }
   };
+
+  deleteTaskById = async (id) => {
+    const query = `DELETE FROM tasks WHERE id = $1;`
+    const result = await this.dbPool.query(query, [id]);
+    return result;
+  }
 }

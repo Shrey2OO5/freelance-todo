@@ -11,6 +11,24 @@ export async function fetchTasks() {
   return data.tasks;
 }
 
+export async function createTask(task_title) {
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({task_title})
+  });
+
+  const data = await response.json();
+  if(!response.ok) {
+    const error = new Error(data.message);
+    error.code = data.errorCode
+    throw error;
+  }
+  return data.task;
+}
+
 export async function updateTask(id, payload) {
   const urlWithParams = `${url}/${id}`;
 
@@ -46,4 +64,21 @@ export async function toggleCompletion(id) {
     throw error;
   }
   return data;
+}
+
+export async function deleteTaskById(id) {
+  const urlWithParams = `${url}/${id}`;
+  const response = await fetch(urlWithParams, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  const result = await response.json();
+  if(!response.ok) {
+    const error = new Error(result.message);
+    error.code = result.errorCode;
+    throw error;
+  }
+  return result;
 }

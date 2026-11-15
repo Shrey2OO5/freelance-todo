@@ -1,4 +1,10 @@
-import { fetchTasks, updateTask, toggleCompletion } from "./api.js";
+import {
+  fetchTasks,
+  updateTask,
+  toggleCompletion,
+  createTask,
+  deleteTaskById,
+} from "./api.js";
 const addForm = document.getElementById("add-form");
 const mainContent = document.getElementById("container");
 
@@ -41,7 +47,7 @@ function handleInitialUiError(error) {
   uiError.className = "ui-err";
   const errText = document.createElement("h2");
   errText.className = "ui-err-text";
-    errText.textContent = knownCodes.includes(error.code)
+  errText.textContent = knownCodes.includes(error.code)
     ? error.message
     : "Could not complete the request. Please try again.";
   document.body.append(uiError);
@@ -89,17 +95,59 @@ function createTaskElements(task, listContainer) {
     }
   });
 
-  deleteBtn.addEventListener("click", () => {
-    deleteTaskById(task.id);
-    renderDeletion(listItem, listContainer);
+  deleteBtn.addEventListener("click", async () => {
+    try {
+      const deleteContentBlock = document.createElement("div");
+      deleteContentBlock.className = "del-block";
+      const deleteMsg = document.createElement("h3");
+      deleteMsg.className = "del-msg";
+      const { message, tasksDeleted } = await deleteTaskById(task.id);
+      deleteMsg.textContent = `${message}, deleted task: ${tasksDeleted}`;
+      deleteMsg.style.cssText = "color: red";
+      mainContent.append(deleteContentBlock);
+      deleteContentBlock.append(deleteMsg);
+      renderDeletion(listItem, listContainer, mainContent);
+      setTimeout(() => {
+        deleteContentBlock.remove();
+      }, 2000);
+    } catch (error) {
+      handleDeleteError(error);
+    }
   });
 
   listItem.append(completeBtn, editBtn, deleteBtn);
   listContainer.append(listItem);
 }
 
-function renderDeletion(listItem, listContainer) {
-  listContainer.remove(listItem);
+function renderDeletion(listItem, listContainer, mainContent) {
+  listItem.remove();
+  if (listContainer.children.length === 0) {
+    const msg = document.createElement("h2");
+    msg.id = "empty-state";
+    msg.textContent = "A clear list. Add your first task above.";
+    mainContent.append(msg);
+  }
+}
+
+function handleCreateError(error) {
+  const errorBlock = document.createElement("div");
+  errorBlock.className = "err-block";
+  document.body.append(errorBlock);
+  const errText = document.createElement("h2");
+  errText.className = "create-err";
+  errText.style.cssText = "color: red";
+
+  errText.textContent = knownCodes.includes(error.code)
+    ? error.message
+    : "Could not complete the request. Please try again.";
+
+  errorBlock.append(errText);
+
+  setTimeout(() => {
+    errorBlock.remove();
+  }, 3000);
+
+  console.error(error);
 }
 
 function handleUpdateError(error) {
@@ -116,6 +164,26 @@ function handleUpdateError(error) {
 
   errorBlock.append(errText);
 
+  setTimeout(() => {
+    errorBlock.remove();
+  }, 3000);
+
+  console.error(error);
+}
+
+function handleDeleteError(error) {
+  const errorBlock = document.createElement("div");
+  errorBlock.className = "del-err-block";
+  document.body.append(errorBlock);
+  const errText = document.createElement("h3");
+  errText.className = "del-err";
+  errText.style.cssText = "color: red";
+
+  errText.textContent = knownCodes.includes(error.code)
+    ? error.message
+    : "Could not complete the request. Please try again.";
+
+  errorBlock.append(errText);
   setTimeout(() => {
     errorBlock.remove();
   }, 3000);
@@ -147,12 +215,34 @@ export function displayAddTask() {
     btn.disabled = addInput.value.trim() === "";
   });
 
-  addForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const taskTitle = addInput.value.trim();
-    addTask(taskTitle);
-    addInput.value = "";
-    btn.disabled = true;
-    // renderTasks();
+  addForm.addEventListener("submit", async (e) => {
+    try {
+      e.preventDefault();
+      const listExists = document.getElementById("list-container");
+      const emptyState = document.getElementById("empty-state");
+
+      const task_title = addInput.value.trim();
+      if (task_title.trim() === "") {
+        alert("Must enter valid task title!");
+        return;
+      }
+      const task = await createTask(task_title);
+      if (!listExists) {
+        const listContainer = document.createElement("ul");
+        listContainer.id = "list-container";
+        mainContent.append(listContainer);
+        if (emptyState) emptyState.remove();
+        createTaskElements(task, listContainer);
+      } else {
+        const listContainer = document.getElementById("list-container");
+        createTaskElements(task, listContainer);
+        const emptyState = document.getElementById("empty-state");
+        if (emptyState) emptyState.remove();
+      }
+      addInput.value = "";
+      btn.disabled = true;
+    } catch (error) {
+      handleCreateError(error);
+    }
   });
 }

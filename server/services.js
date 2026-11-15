@@ -5,6 +5,10 @@ export default class TaskServices {
     this.taskRepo = repo;
   }
 
+  createTask = (payload) => {
+    return this.taskRepo.createTask(payload);
+  }
+
   getAllTasks = () => {
     return this.taskRepo.getTasks();
   }
@@ -15,5 +19,9 @@ export default class TaskServices {
 
   toggleCompletion = (id) => {
     return this.taskRepo.toggleIsComplete(id);
+  }
+  
+  deleteTaskById = (id) => {
+    return this.taskRepo.deleteTaskById(id);
   }
 }
